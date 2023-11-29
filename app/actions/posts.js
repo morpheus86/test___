@@ -32,13 +32,13 @@ export function fetchPosts(params) {
     if (error) {
       return dispatch(postError(error));
     }
-    return dispatch(postsLoaded(posts, pages));
+    dispatch(postsLoaded(posts, pages));
+    dispatch(recountVotes());
   };
 }
 
 export function loadPosts() {
   return async (dispatch, getState) => {
-    await dispatch(fetchPosts());
-    return dispatch(recountVotes());
+    dispatch(fetchPosts());
   };
 }
