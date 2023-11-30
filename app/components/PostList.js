@@ -8,10 +8,11 @@ import { fetchPosts, loadPosts, recountVotes } from "../actions/posts";
 import "./css/_PostList.css";
 
 @connect(
-  ({ posts }) => ({
+  ({ posts, sort}) => ({
     error: posts.error,
     pages: posts.pages,
     posts: posts.posts,
+    sort : sort.sort,
   }),
   (dispatch) => ({
     fetchPosts: (params) => {
@@ -30,12 +31,12 @@ export default class PostList extends Component {
     await this.props.loadPosts();
   }
 
-  async getPosts(page) {
-    await this.props.fetchPosts({ page });
+  async getPosts(page, sort) {
+    await this.props.fetchPosts({ page, sort });
   }
 
   render() {
-    const { error, pages, posts } = this.props;
+    const { error, pages, posts, sort } = this.props;
     if (error) {
       return (
         <div className="postList">
@@ -67,7 +68,7 @@ export default class PostList extends Component {
           {[...Array(pages).keys()].map((i) => {
             const page = i + 1;
             return (
-              <div className="page" key={i} onClick={() => this.getPosts(page)}>
+              <div className="page" key={i} onClick={() => this.getPosts(page, sort)}>
                 {page}
               </div>
             );
